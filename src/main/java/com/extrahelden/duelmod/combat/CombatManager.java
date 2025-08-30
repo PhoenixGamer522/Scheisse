@@ -1,5 +1,6 @@
 package com.extrahelden.duelmod.combat;
 
+
 import com.extrahelden.duelmod.DuelMod;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -31,6 +32,7 @@ public final class CombatManager {
 
         DuelMod.LOGGER.debug("Player {} is in combat ({} ticks remaining)",
                 player.getGameProfile().getName(), timer.getTicks());
+
     }
 
     /**
