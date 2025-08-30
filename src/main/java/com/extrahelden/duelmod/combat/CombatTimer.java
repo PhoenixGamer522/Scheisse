@@ -34,5 +34,12 @@ public class CombatTimer {
     public boolean isActive() {
         return ticks > 0;
     }
+
+    /**
+     * Expose remaining ticks for debugging.
+     */
+    public int getTicks() {
+        return ticks;
+    }
 }
 

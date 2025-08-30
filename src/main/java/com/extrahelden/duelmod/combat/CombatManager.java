@@ -1,5 +1,7 @@
 package com.extrahelden.duelmod.combat;
 
+
+import com.extrahelden.duelmod.DuelMod;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Map;
@@ -20,13 +22,17 @@ public final class CombatManager {
      * Put the player into combat or extend their timer.
      */
     public static void enterCombat(ServerPlayer player) {
-        TIMERS.compute(player.getUUID(), (uuid, timer) -> {
-            if (timer == null) {
+        CombatTimer timer = TIMERS.compute(player.getUUID(), (uuid, existing) -> {
+            if (existing == null) {
                 return new CombatTimer(EXTEND_TICKS);
             }
-            timer.addTicks(EXTEND_TICKS);
-            return timer;
+            existing.addTicks(EXTEND_TICKS);
+            return existing;
         });
+
+        DuelMod.LOGGER.debug("Player {} is in combat ({} ticks remaining)",
+                player.getGameProfile().getName(), timer.getTicks());
+
     }
 
     /**
