@@ -4,6 +4,7 @@ import com.extrahelden.duelmod.DuelMod;
 import com.extrahelden.duelmod.effect.ModEffects;
 import com.extrahelden.duelmod.helper.Helper;
 import com.extrahelden.duelmod.util.LinkedHeartOwnerHelper;
+import com.extrahelden.duelmod.combat.CombatManager;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +16,8 @@ import net.minecraft.server.players.UserBanListEntry;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -22,9 +25,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Mod.EventBusSubscriber(modid = DuelMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class MyForgeEventHandler {
@@ -91,6 +92,9 @@ public class MyForgeEventHandler {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onLivingDeath(LivingDeathEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer victim)) return;
+
+        if (!CombatManager.isInCombat(victim)) return;
+        CombatManager.remove(victim);
 
         CompoundTag data = victim.getPersistentData();
 
@@ -223,6 +227,9 @@ public class MyForgeEventHandler {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
 
 
+        if (!CombatManager.isInCombat(player)) return;
+        CombatManager.remove(player);
+
         CompoundTag data = player.getPersistentData();
         int newLives = Math.max(0, data.getInt("MyLives") - 1);
         data.putInt("MyLives", newLives);
@@ -312,6 +319,26 @@ public class MyForgeEventHandler {
                 ));
             }
         });
+    }
+
+    // =========================
+    // COMBAT HANDLING
+    // =========================
+    @SubscribeEvent
+    public static void onLivingHurt(LivingHurtEvent event) {
+        if (event.getEntity() instanceof ServerPlayer victim) {
+            if (event.getSource().getEntity() instanceof ServerPlayer attacker) {
+                CombatManager.enterCombat(victim);
+                CombatManager.enterCombat(attacker);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            CombatManager.tick();
+        }
     }
 
     // =========================
