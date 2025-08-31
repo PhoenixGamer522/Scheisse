@@ -2,6 +2,7 @@ package com.extrahelden.duelmod.events;
 
 import com.extrahelden.duelmod.DuelMod;
 import com.extrahelden.duelmod.handler.DummyManager;
+import com.extrahelden.duelmod.combat.CombatTimer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
