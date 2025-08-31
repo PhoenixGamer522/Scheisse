@@ -1,11 +1,12 @@
 package com.extrahelden.duelmod.combat;
 
-import com.extrahelden.duelmod.DuelMod;
+
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+
 
 /**
  * Manages combat timers for players.
@@ -29,8 +30,6 @@ public final class CombatManager {
             return existing;
         });
 
-        DuelMod.LOGGER.debug("Player {} is in combat ({} ticks remaining)",
-                player.getGameProfile().getName(), timer.getTicks());
     }
 
     /**
@@ -57,6 +56,7 @@ public final class CombatManager {
      */
     public static void tick() {
         TIMERS.entrySet().removeIf(entry -> !entry.getValue().tick());
+
     }
 
     /**

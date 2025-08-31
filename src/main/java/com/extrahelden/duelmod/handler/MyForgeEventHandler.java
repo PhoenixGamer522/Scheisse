@@ -344,14 +344,17 @@ public class MyForgeEventHandler {
                     int ticks = CombatManager.getRemainingTicks(player);
                     if (ticks > 0) {
                         int seconds = (ticks + 19) / 20;
+
                         player.displayClientMessage(
                                 Component.literal("Im Kampf! ").withStyle(ChatFormatting.RED)
                                         .append(Component.literal("(" + seconds + " s übrig)")
                                                 .withStyle(ChatFormatting.GRAY)),
+
                                 true);
                     }
                 }
             }
+
         }
     }
 
