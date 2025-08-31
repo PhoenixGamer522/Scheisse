@@ -1,16 +1,12 @@
 package com.extrahelden.duelmod.combat;
 
 
-import com.extrahelden.duelmod.DuelMod;
-import net.minecraft.server.MinecraftServer;
-
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import java.util.function.BiConsumer;
 
 /**
  * Manages combat timers for players.
@@ -33,21 +29,6 @@ public final class CombatManager {
             existing.addTicks(EXTEND_TICKS);
             return existing;
         });
-
-
-        DuelMod.LOGGER.debug("Player {} is in combat ({} ticks remaining)",
-                player.getGameProfile().getName(), timer.getTicks());
-
-
-        DuelMod.LOGGER.debug("Player {} is in combat ({} ticks remaining)",
-                player.getGameProfile().getName(), timer.getTicks());
-
-        DuelMod.LOGGER.debug("Player {} is in combat ({} ticks remaining)",
-                player.getGameProfile().getName(), timer.getTicks());
-
-        DuelMod.LOGGER.info("Player {} is in combat ({} ticks remaining)",
-                player.getGameProfile().getName(), timer.getTicks());
-
 
     }
 
@@ -86,37 +67,3 @@ public final class CombatManager {
     }
 }
 
-
-
-            TIMERS.entrySet().removeIf(entry -> !entry.getValue().tick());
-        }
-
-
-
-        /**
-         * Iterate over all players that currently have an active combat timer and
-         * expose the remaining ticks to the provided consumer.
-         *
-         * @param server   server instance used to resolve {@link ServerPlayer}s
-         * @param consumer consumer receiving the player and their remaining ticks
-         */
-        public static void forEachActiveTimer (MinecraftServer server,
-                BiConsumer< ServerPlayer, Integer > consumer){
-            TIMERS.forEach((uuid, timer) -> {
-                if (!timer.isActive()) return;
-
-                ServerPlayer player = server.getPlayerList().getPlayer(uuid);
-                if (player != null) {
-                    consumer.accept(player, timer.getTicks());
-                }
-            });
-
-        }
-
-        /**
-         * Remove a player's combat timer.
-         */
-        public static void remove (ServerPlayer player){
-            TIMERS.remove(player.getUUID());
-    }
-}

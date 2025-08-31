@@ -350,21 +350,10 @@ public class MyForgeEventHandler {
                                         .append(Component.literal("(" + seconds + " s übrig)")
                                                 .withStyle(ChatFormatting.GRAY)),
 
-                        player.displayClientMessage(
-                                Component.literal("Im Kampf! (" + seconds + " s übrig)")
-                                        .withStyle(ChatFormatting.RED),
                                 true);
                     }
                 }
             }
-
-
-                        player.displayClientMessage(Component.literal("-" + seconds + "s-"), true);
-                    }
-                }
-            }
-            CombatManager.forEachActiveTimer(event.getServer(), (player, ticks) ->
-                    player.displayClientMessage(Component.literal("Combat: " + (ticks / 20) + "s"), true));
 
         }
     }
