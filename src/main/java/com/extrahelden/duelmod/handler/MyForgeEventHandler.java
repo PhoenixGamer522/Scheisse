@@ -338,6 +338,8 @@ public class MyForgeEventHandler {
     public static void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
             CombatManager.tick();
+            CombatManager.forEachActiveTimer(event.getServer(), (player, ticks) ->
+                    player.displayClientMessage(Component.literal("Combat: " + (ticks / 20) + "s"), true));
         }
     }
 
