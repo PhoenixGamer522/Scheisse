@@ -348,6 +348,8 @@ public class MyForgeEventHandler {
                     }
                 }
             }
+            CombatManager.forEachActiveTimer(event.getServer(), (player, ticks) ->
+                    player.displayClientMessage(Component.literal("Combat: " + (ticks / 20) + "s"), true));
         }
     }
 
