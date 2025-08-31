@@ -2,12 +2,6 @@ package com.extrahelden.duelmod.combat;
 
 
 import com.extrahelden.duelmod.DuelMod;
-
-
-import com.extrahelden.duelmod.DuelMod;
-
-
-import com.extrahelden.duelmod.DuelMod;
 import net.minecraft.server.MinecraftServer;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -15,6 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+
 import java.util.function.BiConsumer;
 
 /**
@@ -38,6 +33,10 @@ public final class CombatManager {
             existing.addTicks(EXTEND_TICKS);
             return existing;
         });
+
+
+        DuelMod.LOGGER.debug("Player {} is in combat ({} ticks remaining)",
+                player.getGameProfile().getName(), timer.getTicks());
 
 
         DuelMod.LOGGER.debug("Player {} is in combat ({} ticks remaining)",
@@ -77,16 +76,21 @@ public final class CombatManager {
     public static void tick() {
         TIMERS.entrySet().removeIf(entry -> !entry.getValue().tick());
 
+    }
+
+    /**
+     * Remove a player's combat timer.
+     */
+    public static void remove(ServerPlayer player) {
+        TIMERS.remove(player.getUUID());
+    }
+}
+
+
 
             TIMERS.entrySet().removeIf(entry -> !entry.getValue().tick());
         }
 
-
-     * Tick all combat timers and remove expired ones.
-     */
-    public static void tick() {
-        TIMERS.entrySet().removeIf(entry -> !entry.getValue().tick());
-    }
 
 
         /**

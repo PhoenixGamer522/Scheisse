@@ -346,12 +346,18 @@ public class MyForgeEventHandler {
                         int seconds = (ticks + 19) / 20;
 
                         player.displayClientMessage(
+                                Component.literal("Im Kampf! ").withStyle(ChatFormatting.RED)
+                                        .append(Component.literal("(" + seconds + " s übrig)")
+                                                .withStyle(ChatFormatting.GRAY)),
+
+                        player.displayClientMessage(
                                 Component.literal("Im Kampf! (" + seconds + " s übrig)")
                                         .withStyle(ChatFormatting.RED),
                                 true);
                     }
                 }
             }
+
 
                         player.displayClientMessage(Component.literal("-" + seconds + "s-"), true);
                     }
