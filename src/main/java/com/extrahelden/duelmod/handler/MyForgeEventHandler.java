@@ -328,8 +328,7 @@ public class MyForgeEventHandler {
     public static void onLivingHurt(LivingHurtEvent event) {
         if (event.getEntity() instanceof ServerPlayer victim) {
             if (event.getSource().getEntity() instanceof ServerPlayer attacker) {
-                CombatManager.enterCombat(victim);
-                CombatManager.enterCombat(attacker);
+
             }
         }
     }

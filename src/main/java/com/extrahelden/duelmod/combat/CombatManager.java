@@ -1,8 +1,5 @@
 package com.extrahelden.duelmod.combat;
 
-
-import net.minecraft.server.level.ServerPlayer;
-
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,16 +10,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class CombatManager {
     private static final Map<UUID, CombatTimer> TIMERS = new ConcurrentHashMap<>();
+
     public static final int EXTEND_TICKS = 20 * 30; // 30 seconds
 
     private CombatManager() {
     }
 
-    /**
-     * Put the player into combat or extend their timer.
-     */
-    public static void enterCombat(ServerPlayer player) {
-        CombatTimer timer = TIMERS.compute(player.getUUID(), (uuid, existing) -> {
+
             if (existing == null) {
                 return new CombatTimer(EXTEND_TICKS);
             }
@@ -55,7 +49,6 @@ public final class CombatManager {
      * Tick all combat timers and remove expired ones.
      */
     public static void tick() {
-        TIMERS.entrySet().removeIf(entry -> !entry.getValue().tick());
 
     }
 
@@ -63,7 +56,7 @@ public final class CombatManager {
      * Remove a player's combat timer.
      */
     public static void remove(ServerPlayer player) {
-        TIMERS.remove(player.getUUID());
+
     }
 }
 
