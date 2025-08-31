@@ -30,7 +30,7 @@ public final class CombatManager {
             return existing;
         });
 
-        DuelMod.LOGGER.debug("Player {} is in combat ({} ticks remaining)",
+        DuelMod.LOGGER.info("Player {} is in combat ({} ticks remaining)",
                 player.getGameProfile().getName(), timer.getTicks());
 
     }
