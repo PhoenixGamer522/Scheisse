@@ -4,7 +4,6 @@ import com.extrahelden.duelmod.DuelMod;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Iterator;
-
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,7 +22,6 @@ public final class CombatManager {
 
     private static CombatTimer extendTimer(ServerPlayer player) {
         return TIMERS.compute(player.getUUID(), (uuid, existing) -> {
-
             if (existing == null) {
                 return new CombatTimer(EXTEND_TICKS);
             }
@@ -44,7 +42,6 @@ public final class CombatManager {
                 a.getGameProfile().getName(), b.getGameProfile().getName(), ta.getTicks());
         DuelMod.LOGGER.debug("Player {} is in combat with {} ({} ticks remaining)",
                 b.getGameProfile().getName(), a.getGameProfile().getName(), tb.getTicks());
-
     }
 
     /**
@@ -85,7 +82,6 @@ public final class CombatManager {
                 }
             }
         }
-
     }
 
     /**

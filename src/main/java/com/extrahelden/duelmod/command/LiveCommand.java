@@ -1,6 +1,5 @@
 package com.extrahelden.duelmod.command;
 
-
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
@@ -31,9 +30,7 @@ public class LiveCommand {
                         if (team == null) {
                             team = board.addPlayerTeam(teamName);
                         }
-
                     }
                     return 1;
                 }));
     }
-

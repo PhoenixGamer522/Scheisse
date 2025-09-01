@@ -4,6 +4,8 @@ import com.extrahelden.duelmod.DuelMod;
 import com.extrahelden.duelmod.gui.CustomDeathScreen;
 import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
