@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
+import com.extrahelden.duelmod.network.CombatDeathS2CPacket;
 
 public final class NetworkHandler {
     private static final String PROTOCOL = "1";
@@ -30,6 +31,14 @@ public final class NetworkHandler {
                SyncLivesS2CPacket::decode,
                SyncLivesS2CPacket::handle
        );
+
+       CHANNEL.registerMessage(
+               id++,
+               CombatDeathS2CPacket.class,
+               CombatDeathS2CPacket::encode,
+               CombatDeathS2CPacket::decode,
+               CombatDeathS2CPacket::handle
+       );
     }
 
 
@@ -42,5 +51,12 @@ public final class NetworkHandler {
                  new SyncLivesS2CPacket(lives, ownerName, ownerUuid, linkedActive)
          );
     };
+
+    public static void sendCombatDeath(ServerPlayer player) {
+        CHANNEL.send(
+                PacketDistributor.PLAYER.with(() -> player),
+                new CombatDeathS2CPacket()
+        );
+    }
 }
 
