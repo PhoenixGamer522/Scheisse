@@ -97,20 +97,6 @@ public class MyForgeEventHandler {
             team.setPlayerPrefix(Component.literal("Live ").withStyle(ChatFormatting.RED));
             board.addPlayerToTeam(player.getScoreboardName(), team);
         }
-
-        if (data.getBoolean("Vanished")) {
-            com.extrahelden.duelmod.command.VanishCommand.applyVanish(player);
-        }
-
-        var server = player.getServer();
-        if (server != null) {
-            for (ServerPlayer other : server.getPlayerList().getPlayers()) {
-                if (other == player) continue;
-                if (other.getPersistentData().getBoolean("Vanished")) {
-                    player.connection.send(new ClientboundPlayerInfoRemovePacket(java.util.List.of(other.getUUID())));
-                }
-            }
-        }
     }
 
     // =========================
@@ -124,11 +110,6 @@ public class MyForgeEventHandler {
             ServerPlayer opponent = DuelManager.getOpponent(victim);
             DuelManager.end(victim);
             if (opponent != null) {
-                opponent.sendSystemMessage(Component.literal(victim.getGameProfile().getName() + " ist im Duel gestorben."));
-                opponent.displayClientMessage(
-                        Component.literal("Du hast das Duel gewonnen").withStyle(ChatFormatting.AQUA),
-                        true
-                );
             }
             return;
         }
