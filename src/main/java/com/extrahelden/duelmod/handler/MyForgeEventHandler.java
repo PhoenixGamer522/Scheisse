@@ -110,6 +110,7 @@ public class MyForgeEventHandler {
             DuelManager.end(victim);
             if (opponent != null) {
                 opponent.sendSystemMessage(Component.literal(victim.getGameProfile().getName() + " ist im Duel gestorben."));
+
             }
             return;
         }
@@ -117,12 +118,6 @@ public class MyForgeEventHandler {
         if (!CombatManager.isInCombat(victim)) return;
         CombatManager.remove(victim);
         com.extrahelden.duelmod.network.NetworkHandler.sendCombatDeath(victim);
-
-        if (!CombatManager.isInCombat(victim)) return;
-        CombatManager.remove(victim);
-
-        com.extrahelden.duelmod.network.NetworkHandler.sendCombatDeath(victim);
-
 
 
         CompoundTag data = victim.getPersistentData();
@@ -263,9 +258,6 @@ public class MyForgeEventHandler {
         if (!CombatManager.isInCombat(player)) return;
         CombatManager.remove(player);
 
-        if (!CombatManager.isInCombat(player)) return;
-        CombatManager.remove(player);
-
         CompoundTag data = player.getPersistentData();
         int newLives = Math.max(0, data.getInt("MyLives") - 1);
         data.putInt("MyLives", newLives);
@@ -367,10 +359,6 @@ public class MyForgeEventHandler {
                 if (!DuelManager.isInDuel(attacker) && !DuelManager.isInDuel(victim)) {
                     CombatManager.engage(attacker, victim);
                 }
-                CombatManager.engage(attacker, victim);
-
-
-
             }
         }
     }
@@ -390,12 +378,10 @@ public class MyForgeEventHandler {
                                 Component.literal("Im Kampf! ").withStyle(ChatFormatting.RED)
                                         .append(Component.literal("(" + seconds + " s übrig)")
                                                 .withStyle(ChatFormatting.GRAY)),
-
                                 true);
                     }
                 }
             }
-
         }
     }
 

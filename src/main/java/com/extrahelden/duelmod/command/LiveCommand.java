@@ -1,8 +1,6 @@
 package com.extrahelden.duelmod.command;
 
-import com.extrahelden.duelmod.DuelMod;
-import com.extrahelden.duelmod.helper.Helper;
-import com.extrahelden.duelmod.util.DuelUtils;
+
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
@@ -29,17 +27,13 @@ public class LiveCommand {
                             board.removePlayerTeam(team);
                         }
                         data.putBoolean("LivePrefix", false);
-                        player.sendSystemMessage(Component.literal(Helper.getPrefix()+ " Live-Modus deaktiviert").withStyle(ChatFormatting.RED));
                     } else {
                         if (team == null) {
                             team = board.addPlayerTeam(teamName);
                         }
-                        team.setPlayerPrefix(Component.literal("[LIVE] ").withStyle(ChatFormatting.DARK_RED));
-                        board.addPlayerToTeam(player.getScoreboardName(), team);
-                        data.putBoolean("LivePrefix", true);
-                        player.sendSystemMessage(Component.literal(Helper.getPrefix()+ " Live-Modus aktiviert").withStyle(ChatFormatting.RED));
+
                     }
                     return 1;
                 }));
     }
-}
+
