@@ -4,17 +4,22 @@ import com.extrahelden.duelmod.DuelMod;
 import com.extrahelden.duelmod.effect.ModEffects;
 import com.extrahelden.duelmod.helper.Helper;
 import com.extrahelden.duelmod.util.LinkedHeartOwnerHelper;
+import com.extrahelden.duelmod.combat.CombatManager;
+import com.extrahelden.duelmod.duel.DuelManager;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.protocol.game.ClientboundPlayerInfoRemovePacket;
 import net.minecraft.server.players.UserBanList;
 import net.minecraft.server.players.UserBanListEntry;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -22,9 +27,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Mod.EventBusSubscriber(modid = DuelMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class MyForgeEventHandler {
@@ -83,6 +86,31 @@ public class MyForgeEventHandler {
                     Helper.getPrefix() + "§a Dein Linked Heart ist aktiv."
             ));
         }
+
+        if (data.getBoolean("LivePrefix")) {
+            var board = player.getScoreboard();
+            String teamName = "live_" + player.getScoreboardName();
+            var team = board.getPlayerTeam(teamName);
+            if (team == null) {
+                team = board.addPlayerTeam(teamName);
+            }
+            team.setPlayerPrefix(Component.literal("Live ").withStyle(ChatFormatting.RED));
+            board.addPlayerToTeam(player.getScoreboardName(), team);
+        }
+
+        if (data.getBoolean("Vanished")) {
+            com.extrahelden.duelmod.command.VanishCommand.applyVanish(player);
+        }
+
+        var server = player.getServer();
+        if (server != null) {
+            for (ServerPlayer other : server.getPlayerList().getPlayers()) {
+                if (other == player) continue;
+                if (other.getPersistentData().getBoolean("Vanished")) {
+                    player.connection.send(new ClientboundPlayerInfoRemovePacket(java.util.List.of(other.getUUID())));
+                }
+            }
+        }
     }
 
     // =========================
@@ -91,6 +119,23 @@ public class MyForgeEventHandler {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onLivingDeath(LivingDeathEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer victim)) return;
+
+        if (DuelManager.isInDuel(victim)) {
+            ServerPlayer opponent = DuelManager.getOpponent(victim);
+            DuelManager.end(victim);
+            if (opponent != null) {
+                opponent.sendSystemMessage(Component.literal(victim.getGameProfile().getName() + " ist im Duel gestorben."));
+                opponent.displayClientMessage(
+                        Component.literal("Du hast das Duel gewonnen").withStyle(ChatFormatting.AQUA),
+                        true
+                );
+            }
+            return;
+        }
+
+        if (!CombatManager.isInCombat(victim)) return;
+        CombatManager.remove(victim);
+        com.extrahelden.duelmod.network.NetworkHandler.sendCombatDeath(victim);
 
         CompoundTag data = victim.getPersistentData();
 
@@ -222,6 +267,13 @@ public class MyForgeEventHandler {
     public static void onPlayerLogout(PlayerLoggedOutEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
 
+        if (DuelManager.isInDuel(player)) {
+            DuelManager.end(player);
+            return;
+        }
+
+        if (!CombatManager.isInCombat(player)) return;
+        CombatManager.remove(player);
 
         CompoundTag data = player.getPersistentData();
         int newLives = Math.max(0, data.getInt("MyLives") - 1);
@@ -312,6 +364,41 @@ public class MyForgeEventHandler {
                 ));
             }
         });
+    }
+
+    // =========================
+    // COMBAT HANDLING
+    // =========================
+    @SubscribeEvent
+    public static void onLivingHurt(LivingHurtEvent event) {
+        if (event.getEntity() instanceof ServerPlayer victim) {
+            if (event.getSource().getEntity() instanceof ServerPlayer attacker) {
+                if (!DuelManager.isInDuel(attacker) && !DuelManager.isInDuel(victim)) {
+                    CombatManager.engage(attacker, victim);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            CombatManager.tick();
+            var server = event.getServer();
+            if (server != null) {
+                for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+                    int ticks = CombatManager.getRemainingTicks(player);
+                    if (ticks > 0) {
+                        int seconds = (ticks + 19) / 20;
+                        player.displayClientMessage(
+                                Component.literal("Im Kampf! ").withStyle(ChatFormatting.RED)
+                                        .append(Component.literal("(" + seconds + " s übrig)")
+                                                .withStyle(ChatFormatting.GRAY)),
+                                true);
+                    }
+                }
+            }
+        }
     }
 
     // =========================
