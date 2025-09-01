@@ -10,12 +10,18 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = DuelMod.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ClientForgeEvents {
+    private static boolean combatDeath;
+
+    public static void markCombatDeath() {
+        combatDeath = true;
+    }
 
     @SubscribeEvent
     public static void onScreenOpen(ScreenEvent.Opening event) {
-        if (event.getScreen() instanceof DeathScreen old && !(event.getScreen() instanceof CustomDeathScreen)) {
+        if (combatDeath && event.getScreen() instanceof DeathScreen old && !(event.getScreen() instanceof CustomDeathScreen)) {
             System.out.println("[DuelMod] Replacing DeathScreen with CustomDeathScreen");
             event.setNewScreen(new CustomDeathScreen(old.getTitle(), true));
+            combatDeath = false;
         }
     }
 }

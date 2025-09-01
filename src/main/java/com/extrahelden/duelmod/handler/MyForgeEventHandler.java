@@ -107,6 +107,10 @@ public class MyForgeEventHandler {
         if (!CombatManager.isInCombat(victim)) return;
         CombatManager.remove(victim);
 
+        com.extrahelden.duelmod.network.NetworkHandler.sendCombatDeath(victim);
+
+
+
         CompoundTag data = victim.getPersistentData();
 
         // Doppelverarbeitung verhindern
@@ -339,6 +343,9 @@ public class MyForgeEventHandler {
     public static void onLivingHurt(LivingHurtEvent event) {
         if (event.getEntity() instanceof ServerPlayer victim) {
             if (event.getSource().getEntity() instanceof ServerPlayer attacker) {
+                CombatManager.engage(attacker, victim);
+
+
 
             }
         }

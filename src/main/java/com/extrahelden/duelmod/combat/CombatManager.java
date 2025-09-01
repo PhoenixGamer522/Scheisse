@@ -56,7 +56,6 @@ public final class CombatManager {
      * Remove a player's combat timer.
      */
     public static void remove(ServerPlayer player) {
-
     }
 }
 
