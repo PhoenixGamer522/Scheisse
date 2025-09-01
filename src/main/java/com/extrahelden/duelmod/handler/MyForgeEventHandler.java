@@ -109,11 +109,7 @@ public class MyForgeEventHandler {
             ServerPlayer opponent = DuelManager.getOpponent(victim);
             DuelManager.end(victim);
             if (opponent != null) {
-                opponent.sendSystemMessage(Component.literal(victim.getGameProfile().getName() + " ist im Duel gestorben."));
-                opponent.displayClientMessage(
-                        Component.literal("Du hast das Duel gewonnen").withStyle(ChatFormatting.AQUA),
-                        true
-                );
+                opponent.sendSystemMessage(Component.literal(victim.getGameProfile().getName() + " ist im Duel gestorben."));n
             }
             return;
         }
