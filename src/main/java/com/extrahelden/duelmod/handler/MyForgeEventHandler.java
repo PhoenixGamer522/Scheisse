@@ -118,6 +118,13 @@ public class MyForgeEventHandler {
         CombatManager.remove(victim);
         com.extrahelden.duelmod.network.NetworkHandler.sendCombatDeath(victim);
 
+        if (!CombatManager.isInCombat(victim)) return;
+        CombatManager.remove(victim);
+
+        com.extrahelden.duelmod.network.NetworkHandler.sendCombatDeath(victim);
+
+
+
         CompoundTag data = victim.getPersistentData();
 
         // Doppelverarbeitung verhindern
@@ -256,6 +263,9 @@ public class MyForgeEventHandler {
         if (!CombatManager.isInCombat(player)) return;
         CombatManager.remove(player);
 
+        if (!CombatManager.isInCombat(player)) return;
+        CombatManager.remove(player);
+
         CompoundTag data = player.getPersistentData();
         int newLives = Math.max(0, data.getInt("MyLives") - 1);
         data.putInt("MyLives", newLives);
@@ -357,6 +367,10 @@ public class MyForgeEventHandler {
                 if (!DuelManager.isInDuel(attacker) && !DuelManager.isInDuel(victim)) {
                     CombatManager.engage(attacker, victim);
                 }
+                CombatManager.engage(attacker, victim);
+
+
+
             }
         }
     }
@@ -371,14 +385,17 @@ public class MyForgeEventHandler {
                     int ticks = CombatManager.getRemainingTicks(player);
                     if (ticks > 0) {
                         int seconds = (ticks + 19) / 20;
+
                         player.displayClientMessage(
                                 Component.literal("Im Kampf! ").withStyle(ChatFormatting.RED)
                                         .append(Component.literal("(" + seconds + " s übrig)")
                                                 .withStyle(ChatFormatting.GRAY)),
+
                                 true);
                     }
                 }
             }
+
         }
     }
 
