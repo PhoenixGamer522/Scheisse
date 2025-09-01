@@ -136,12 +136,12 @@ Adding input to inheritance map
 Processing entries
 Conflicting propagated mapping for com/extrahelden/duelmod/effect/LifeSaverEffect/applyEffectTick(Lnet/minecraft/world/entity/LivingEntity;I)V from net/minecraft/world/effect/MobEffect/applyEffectTick(Lnet/minecraft/world/entity/LivingEntity;I)V: applyEffectTick -> m_6742_
 Conflicting propagated mapping for com/extrahelden/duelmod/effect/LifeSaverEffect/isDurationEffectTick(II)Z from net/minecraft/world/effect/MobEffect/isDurationEffectTick(II)Z: isDurationEffectTick -> m_6584_
-Conflicting propagated mapping for com/extrahelden/duelmod/gui/CustomDeathScreen/render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V from net/minecraft/client/gui/screens/DeathScreen/render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V: render -> m_88315_
-Conflicting propagated mapping for com/extrahelden/duelmod/gui/CustomDeathScreen/init()V from net/minecraft/client/gui/screens/DeathScreen/init()V: init -> m_7856_
 Conflicting propagated mapping for net/minecraftforge/client/gui/overlay/ForgeGui/clearCache()V from net/minecraft/client/gui/Gui/clearCache()V: clearCache -> m_93091_
 Conflicting propagated mapping for net/minecraftforge/client/gui/overlay/ForgeGui/render(Lnet/minecraft/client/gui/GuiGraphics;F)V from net/minecraft/client/gui/Gui/render(Lnet/minecraft/client/gui/GuiGraphics;F)V: render -> m_280421_
 Conflicting propagated mapping for net/minecraftforge/client/gui/overlay/ForgeGui/renderPortalOverlay(Lnet/minecraft/client/gui/GuiGraphics;F)V from net/minecraft/client/gui/Gui/renderPortalOverlay(Lnet/minecraft/client/gui/GuiGraphics;F)V: renderPortalOverlay -> m_280379_
 Conflicting propagated mapping for net/minecraftforge/client/gui/overlay/ForgeGui/renderJumpMeter(Lnet/minecraft/world/entity/PlayerRideableJumping;Lnet/minecraft/client/gui/GuiGraphics;I)V from net/minecraft/client/gui/Gui/renderJumpMeter(Lnet/minecraft/world/entity/PlayerRideableJumping;Lnet/minecraft/client/gui/GuiGraphics;I)V: renderJumpMeter -> m_280069_
+Conflicting propagated mapping for com/extrahelden/duelmod/gui/CustomDeathScreen/render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V from net/minecraft/client/gui/screens/DeathScreen/render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V: render -> m_88315_
+Conflicting propagated mapping for com/extrahelden/duelmod/gui/CustomDeathScreen/init()V from net/minecraft/client/gui/screens/DeathScreen/init()V: init -> m_7856_
 Conflicting propagated mapping for net/minecraft/world/entity/LivingEntity/lambda$addAdditionalSaveData$3(Lnet/minecraft/nbt/CompoundTag;Lnet/minecraft/nbt/Tag;)V from net/minecraft/world/entity/player/Player/lambda$addAdditionalSaveData$3(Lnet/minecraft/nbt/CompoundTag;Lnet/minecraft/nbt/Tag;)V: lambda$addAdditionalSaveData$3 -> m_219754_
 Conflicting propagated mapping for com/extrahelden/duelmod/mobs/DummyEntity/getHurtSound(Lnet/minecraft/world/damagesource/DamageSource;)Lnet/minecraft/sounds/SoundEvent; from net/minecraft/world/entity/monster/Zombie/getHurtSound(Lnet/minecraft/world/damagesource/DamageSource;)Lnet/minecraft/sounds/SoundEvent;: getHurtSound -> m_7975_
 Conflicting propagated mapping for com/extrahelden/duelmod/mobs/DummyEntity/die(Lnet/minecraft/world/damagesource/DamageSource;)V from net/minecraft/world/entity/LivingEntity/die(Lnet/minecraft/world/damagesource/DamageSource;)V: die -> m_6667_
@@ -361,11 +361,16 @@ Writing Output: C:\Users\hahnk\OneDrive\Dokumente\GitHub\Scheisse\build\reobfJar
   com/extrahelden/duelmod/combat/CombatManager.class
   com/extrahelden/duelmod/combat/CombatTimer.class
   com/extrahelden/duelmod/command/
+  com/extrahelden/duelmod/command/AcceptCommand.class
+  com/extrahelden/duelmod/command/DenyCommand.class
+  com/extrahelden/duelmod/command/DuelCommand.class
   com/extrahelden/duelmod/command/LiveCommand.class
   com/extrahelden/duelmod/command/ShowLivesCommand$OwnerPair.class
   com/extrahelden/duelmod/command/ShowLivesCommand.class
   com/extrahelden/duelmod/command/SyncLivesS2CPacket$Client.class
   com/extrahelden/duelmod/command/SyncLivesS2CPacket.class
+  com/extrahelden/duelmod/duel/
+  com/extrahelden/duelmod/duel/DuelManager.class
   com/extrahelden/duelmod/effect/
   com/extrahelden/duelmod/effect/LifeSaverEffect.class
   com/extrahelden/duelmod/effect/ModEffects.class
