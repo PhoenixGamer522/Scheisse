@@ -106,7 +106,10 @@ public class MyForgeEventHandler {
 
         if (!CombatManager.isInCombat(victim)) return;
         CombatManager.remove(victim);
+
         com.extrahelden.duelmod.network.NetworkHandler.sendCombatDeath(victim);
+
+
 
         CompoundTag data = victim.getPersistentData();
 
@@ -341,6 +344,9 @@ public class MyForgeEventHandler {
         if (event.getEntity() instanceof ServerPlayer victim) {
             if (event.getSource().getEntity() instanceof ServerPlayer attacker) {
                 CombatManager.engage(attacker, victim);
+
+
+
             }
         }
     }
@@ -355,14 +361,17 @@ public class MyForgeEventHandler {
                     int ticks = CombatManager.getRemainingTicks(player);
                     if (ticks > 0) {
                         int seconds = (ticks + 19) / 20;
+
                         player.displayClientMessage(
                                 Component.literal("Im Kampf! ").withStyle(ChatFormatting.RED)
                                         .append(Component.literal("(" + seconds + " s übrig)")
                                                 .withStyle(ChatFormatting.GRAY)),
+
                                 true);
                     }
                 }
             }
+
         }
     }
 
