@@ -1,6 +1,7 @@
 package com.extrahelden.duelmod;
 
 import com.extrahelden.duelmod.command.ShowLivesCommand;
+import com.extrahelden.duelmod.command.LiveCommand;
 import com.extrahelden.duelmod.effect.ModEffects;
 import com.extrahelden.duelmod.handler.DeathHandler;
 import com.extrahelden.duelmod.handler.ModEntities;
@@ -76,6 +77,7 @@ public class DuelMod {
 
     private void onRegisterCommands(RegisterCommandsEvent event) {
         ShowLivesCommand.register(event.getDispatcher());
+        LiveCommand.register(event.getDispatcher());
     }
 
     @SubscribeEvent
