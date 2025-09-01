@@ -12,6 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.protocol.game.ClientboundPlayerInfoRemovePacket;
 import net.minecraft.server.players.UserBanList;
 import net.minecraft.server.players.UserBanListEntry;
 import net.minecraft.world.entity.Entity;
@@ -109,7 +110,6 @@ public class MyForgeEventHandler {
             ServerPlayer opponent = DuelManager.getOpponent(victim);
             DuelManager.end(victim);
             if (opponent != null) {
-                opponent.sendSystemMessage(Component.literal(victim.getGameProfile().getName() + " ist im Duel gestorben."));n
             }
             return;
         }
