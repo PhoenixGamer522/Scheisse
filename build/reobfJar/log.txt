@@ -395,6 +395,7 @@ Writing Output: C:\Users\hahnk\OneDrive\Dokumente\GitHub\Scheisse\build\reobfJar
   com/extrahelden/duelmod/mobs/DummyEntity.class
   com/extrahelden/duelmod/network/
   com/extrahelden/duelmod/network/CombatDeathS2CPacket.class
+  com/extrahelden/duelmod/network/DuelStatusS2CPacket.class
   com/extrahelden/duelmod/network/NetworkHandler.class
   com/extrahelden/duelmod/network/SyncLivesS2CPacket.class
   com/extrahelden/duelmod/perms/

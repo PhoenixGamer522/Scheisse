@@ -34,3 +34,4 @@ public class LiveCommand {
                     return 1;
                 }));
     }
+}
