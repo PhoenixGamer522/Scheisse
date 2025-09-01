@@ -7,7 +7,6 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import com.extrahelden.duelmod.network.CombatDeathS2CPacket;
-import com.extrahelden.duelmod.network.DuelStatusS2CPacket;
 
 public final class NetworkHandler {
     private static final String PROTOCOL = "1";
@@ -40,14 +39,6 @@ public final class NetworkHandler {
                CombatDeathS2CPacket::decode,
                CombatDeathS2CPacket::handle
        );
-
-       CHANNEL.registerMessage(
-               id++,
-               DuelStatusS2CPacket.class,
-               DuelStatusS2CPacket::encode,
-               DuelStatusS2CPacket::decode,
-               DuelStatusS2CPacket::handle
-       );
     }
 
 
@@ -65,13 +56,6 @@ public final class NetworkHandler {
         CHANNEL.send(
                 PacketDistributor.PLAYER.with(() -> player),
                 new CombatDeathS2CPacket()
-        );
-    }
-
-    public static void sendDuelStatus(ServerPlayer player, boolean inDuel) {
-        CHANNEL.send(
-                PacketDistributor.PLAYER.with(() -> player),
-                new DuelStatusS2CPacket(inDuel)
         );
     }
 }

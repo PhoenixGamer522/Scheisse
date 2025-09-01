@@ -41,5 +41,4 @@ public class CombatTimer {
     public int getTicks() {
         return ticks;
     }
-}
 
