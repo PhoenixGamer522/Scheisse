@@ -84,6 +84,17 @@ public class MyForgeEventHandler {
                     Helper.getPrefix() + "§a Dein Linked Heart ist aktiv."
             ));
         }
+
+        if (data.getBoolean("LivePrefix")) {
+            var board = player.getScoreboard();
+            String teamName = "live_" + player.getScoreboardName();
+            var team = board.getPlayerTeam(teamName);
+            if (team == null) {
+                team = board.addPlayerTeam(teamName);
+            }
+            team.setPlayerPrefix(Component.literal("Live ").withStyle(ChatFormatting.RED));
+            board.addPlayerToTeam(player.getScoreboardName(), team);
+        }
     }
 
     // =========================
