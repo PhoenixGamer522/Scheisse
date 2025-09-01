@@ -29,7 +29,7 @@ public class LiveCommand {
                             board.removePlayerTeam(team);
                         }
                         data.putBoolean("LivePrefix", false);
-                        player.sendSystemMessage(Component.literal(Helper.getPrefix()+ "Live-Modus deaktiviert").withStyle(ChatFormatting.RED));
+                        player.sendSystemMessage(Component.literal(Helper.getPrefix()+ " Live-Modus deaktiviert").withStyle(ChatFormatting.RED));
                     } else {
                         if (team == null) {
                             team = board.addPlayerTeam(teamName);
@@ -37,7 +37,7 @@ public class LiveCommand {
                         team.setPlayerPrefix(Component.literal("[LIVE] ").withStyle(ChatFormatting.DARK_RED));
                         board.addPlayerToTeam(player.getScoreboardName(), team);
                         data.putBoolean("LivePrefix", true);
-                        player.sendSystemMessage(Component.literal(Helper.getPrefix()+ "Live-Modus aktiviert").withStyle(ChatFormatting.RED));
+                        player.sendSystemMessage(Component.literal(Helper.getPrefix()+ " Live-Modus aktiviert").withStyle(ChatFormatting.RED));
                     }
                     return 1;
                 }));
