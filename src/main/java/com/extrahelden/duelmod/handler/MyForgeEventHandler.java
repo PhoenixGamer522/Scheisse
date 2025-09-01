@@ -110,10 +110,7 @@ public class MyForgeEventHandler {
             DuelManager.end(victim);
             if (opponent != null) {
                 opponent.sendSystemMessage(Component.literal(victim.getGameProfile().getName() + " ist im Duel gestorben."));
-                opponent.displayClientMessage(
-                        Component.literal("Du hast das Duel gewonnen").withStyle(ChatFormatting.AQUA),
-                        true
-                );
+
             }
             return;
         }
@@ -121,6 +118,7 @@ public class MyForgeEventHandler {
         if (!CombatManager.isInCombat(victim)) return;
         CombatManager.remove(victim);
         com.extrahelden.duelmod.network.NetworkHandler.sendCombatDeath(victim);
+
 
         CompoundTag data = victim.getPersistentData();
 
@@ -375,6 +373,7 @@ public class MyForgeEventHandler {
                     int ticks = CombatManager.getRemainingTicks(player);
                     if (ticks > 0) {
                         int seconds = (ticks + 19) / 20;
+
                         player.displayClientMessage(
                                 Component.literal("Im Kampf! ").withStyle(ChatFormatting.RED)
                                         .append(Component.literal("(" + seconds + " s übrig)")
