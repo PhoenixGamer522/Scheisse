@@ -361,6 +361,7 @@ Writing Output: C:\Users\hahnk\OneDrive\Dokumente\GitHub\Scheisse\build\reobfJar
   com/extrahelden/duelmod/combat/CombatManager.class
   com/extrahelden/duelmod/combat/CombatTimer.class
   com/extrahelden/duelmod/command/
+  com/extrahelden/duelmod/command/LiveCommand.class
   com/extrahelden/duelmod/command/ShowLivesCommand$OwnerPair.class
   com/extrahelden/duelmod/command/ShowLivesCommand.class
   com/extrahelden/duelmod/command/SyncLivesS2CPacket$Client.class
