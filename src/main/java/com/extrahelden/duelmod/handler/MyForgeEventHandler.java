@@ -5,6 +5,7 @@ import com.extrahelden.duelmod.effect.ModEffects;
 import com.extrahelden.duelmod.helper.Helper;
 import com.extrahelden.duelmod.util.LinkedHeartOwnerHelper;
 import com.extrahelden.duelmod.combat.CombatManager;
+import com.extrahelden.duelmod.duel.DuelManager;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -103,6 +104,15 @@ public class MyForgeEventHandler {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onLivingDeath(LivingDeathEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer victim)) return;
+
+        if (DuelManager.isInDuel(victim)) {
+            ServerPlayer opponent = DuelManager.getOpponent(victim);
+            DuelManager.end(victim);
+            if (opponent != null) {
+                opponent.sendSystemMessage(Component.literal(victim.getGameProfile().getName() + " ist im Duel gestorben."));
+            }
+            return;
+        }
 
         if (!CombatManager.isInCombat(victim)) return;
         CombatManager.remove(victim);
@@ -238,6 +248,10 @@ public class MyForgeEventHandler {
     public static void onPlayerLogout(PlayerLoggedOutEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
 
+        if (DuelManager.isInDuel(player)) {
+            DuelManager.end(player);
+            return;
+        }
 
         if (!CombatManager.isInCombat(player)) return;
         CombatManager.remove(player);
@@ -340,7 +354,9 @@ public class MyForgeEventHandler {
     public static void onLivingHurt(LivingHurtEvent event) {
         if (event.getEntity() instanceof ServerPlayer victim) {
             if (event.getSource().getEntity() instanceof ServerPlayer attacker) {
-                CombatManager.engage(attacker, victim);
+                if (!DuelManager.isInDuel(attacker) && !DuelManager.isInDuel(victim)) {
+                    CombatManager.engage(attacker, victim);
+                }
             }
         }
     }
