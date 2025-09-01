@@ -14,7 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class CombatManager {
     private static final Map<UUID, CombatTimer> TIMERS = new ConcurrentHashMap<>();
     private static final Map<UUID, UUID> PARTNERS = new ConcurrentHashMap<>();
-
     public static final int EXTEND_TICKS = 20 * 30; // 30 seconds
 
     private CombatManager() {
