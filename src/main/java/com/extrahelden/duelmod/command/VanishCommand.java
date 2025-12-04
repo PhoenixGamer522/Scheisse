@@ -38,10 +38,3 @@ public class VanishCommand {
         player.setInvisible(false);
         var server = player.getServer();
         if (server == null) return;
-        for (ServerPlayer other : server.getPlayerList().getPlayers()) {
-            if (other != player) {
-                other.connection.send(packet);
-            }
-        }
-    }
-}

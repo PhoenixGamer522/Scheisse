@@ -95,6 +95,32 @@ public class MyForgeEventHandler {
             team.setPlayerPrefix(Component.literal("Live ").withStyle(ChatFormatting.RED));
             board.addPlayerToTeam(player.getScoreboardName(), team);
         }
+
+        if (data.getBoolean("LivePrefix")) {
+            var board = player.getScoreboard();
+            String teamName = "live_" + player.getScoreboardName();
+            var team = board.getPlayerTeam(teamName);
+            if (team == null) {
+                team = board.addPlayerTeam(teamName);
+            }
+            team.setPlayerPrefix(Component.literal("Live ").withStyle(ChatFormatting.RED));
+            board.addPlayerToTeam(player.getScoreboardName(), team);
+        }
+
+        if (data.getBoolean("Vanished")) {
+            com.extrahelden.duelmod.command.VanishCommand.applyVanish(player);
+        }
+
+        var server = player.getServer();
+        if (server != null) {
+            for (ServerPlayer other : server.getPlayerList().getPlayers()) {
+                if (other == player) continue;
+                if (other.getPersistentData().getBoolean("Vanished")) {
+                    player.connection.send(new ClientboundPlayerInfoRemovePacket(java.util.List.of(other.getUUID())));
+                    VanishCommand.sendEmptyEquipment(other, player);
+                }
+            }
+        }
     }
 
     // =========================

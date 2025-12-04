@@ -1,6 +1,5 @@
 package com.extrahelden.duelmod.duel;
 
-import com.extrahelden.duelmod.helper.Helper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import com.extrahelden.duelmod.network.NetworkHandler;
@@ -72,10 +71,8 @@ public final class DuelManager {
             if (opp != null) {
                 opp.getPersistentData().putBoolean("InDuel", false);
                 NetworkHandler.sendDuelStatus(opp, false);
-                opp.sendSystemMessage(Component.literal(Helper.getPrefix() + "§8 Duel wurde beendet"));
             }
         }
         player.getPersistentData().putBoolean("InDuel", false);
         NetworkHandler.sendDuelStatus(player, false);
     }
-}

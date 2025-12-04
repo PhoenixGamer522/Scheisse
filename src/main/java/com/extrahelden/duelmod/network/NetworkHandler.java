@@ -40,13 +40,6 @@ public final class NetworkHandler {
                CombatDeathS2CPacket::handle
        );
 
-      CHANNEL.registerMessage(
-              id++,
-              DuelStatusS2CPacket.class,
-              DuelStatusS2CPacket::encode,
-              DuelStatusS2CPacket::decode,
-              DuelStatusS2CPacket::handle
-      );
     }
 
 
