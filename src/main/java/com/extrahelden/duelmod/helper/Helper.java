@@ -3,7 +3,7 @@ package com.extrahelden.duelmod.helper;
 import java.util.concurrent.TimeUnit;
 
 public class Helper {
-    private static String prefix = "§f§l[§6§lEXTRAHELDEN§f§l]§r ";
+    private static String prefix = "[§bExtrahelden§l§f]";
     private static String projectName = "Minecraft Extrahelden";
 
     public static String formatTime(int var0) {

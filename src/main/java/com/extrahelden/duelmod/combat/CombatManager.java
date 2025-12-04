@@ -15,7 +15,6 @@ public final class CombatManager {
     private static final Map<UUID, CombatTimer> TIMERS = new ConcurrentHashMap<>();
     private static final Map<UUID, UUID> PARTNERS = new ConcurrentHashMap<>();
     public static final int EXTEND_TICKS = 20 * 30; // 30 seconds
-    public static final int MAX_TICKS = 20 * 500; // 500 seconds cap
 
     private CombatManager() {
     }
@@ -23,13 +22,6 @@ public final class CombatManager {
     private static CombatTimer extendTimer(ServerPlayer player) {
         return TIMERS.compute(player.getUUID(), (uuid, existing) -> {
             if (existing == null) {
-                return new CombatTimer(Math.min(EXTEND_TICKS, MAX_TICKS));
-            }
-            int current = existing.getTicks();
-            int available = Math.max(0, MAX_TICKS - current);
-            if (available > 0) {
-                existing.addTicks(Math.min(EXTEND_TICKS, available));
-            }
             return existing;
         });
     }
