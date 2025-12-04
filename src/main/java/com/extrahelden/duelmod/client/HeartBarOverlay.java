@@ -29,6 +29,7 @@ public class HeartBarOverlay {
         if (player == null) return;
         if (mc.gameMode == null || mc.gameMode.getPlayerMode() != GameType.SURVIVAL) return;
         if (!player.getPersistentData().contains("MyLives")) return;
+        if (player.getPersistentData().getBoolean("InDuel")) return;
 
          int lives = player.getPersistentData().getInt("MyLives");
         boolean linkedActive = player.getPersistentData().getBoolean("LinkedHeartActive");
