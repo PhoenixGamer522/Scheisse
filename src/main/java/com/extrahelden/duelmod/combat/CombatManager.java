@@ -22,9 +22,6 @@ public final class CombatManager {
     private static CombatTimer extendTimer(ServerPlayer player) {
         return TIMERS.compute(player.getUUID(), (uuid, existing) -> {
             if (existing == null) {
-                return new CombatTimer(EXTEND_TICKS);
-            }
-            existing.addTicks(EXTEND_TICKS);
             return existing;
         });
     }

@@ -64,7 +64,5 @@ public final class DuelManager {
             ACTIVE.remove(oppId);
             ServerPlayer opp = player.getServer().getPlayerList().getPlayer(oppId);
             if (opp != null) {
-            }
-        }
     }
 }
