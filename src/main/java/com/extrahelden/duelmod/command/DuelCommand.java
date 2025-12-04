@@ -15,24 +15,14 @@ public class DuelCommand {
                 .executes(ctx -> {
                     ServerPlayer player = ctx.getSource().getPlayerOrException();
                     if (!DuelManager.canChallenge(player)) {
-                        player.sendSystemMessage(Component.literal("Du kannst keine weiteren Duelle starten."));
                         return 1;
                     }
                     ServerPlayer target = findTarget(player);
                     if (target == null) {
-                        player.sendSystemMessage(Component.literal("Kein Spieler vor dir."));
-                        return 1;
-                    }
-                    if (DuelManager.isInDuel(player) || DuelManager.isInDuel(target)) {
-                        player.sendSystemMessage(Component.literal("Einer der Spieler ist bereits in einem Duel."));
                         return 1;
                     }
                     DuelManager.request(player, target);
                     DuelManager.recordUse(player);
-                    player.sendSystemMessage(Component.literal("Du hast "
-                            + target.getGameProfile().getName() + " zu einem Duel herausgefordert."));
-                    target.sendSystemMessage(Component.literal(player.getGameProfile().getName()
-                            + " hat dich zu einem Duel herausgefordert. Tippe /accept zum Annehmen oder /deny zum Ablehnen."));
                     return 1;
                 }));
     }

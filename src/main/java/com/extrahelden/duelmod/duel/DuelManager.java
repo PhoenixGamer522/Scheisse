@@ -71,10 +71,8 @@ public final class DuelManager {
             if (opp != null) {
                 opp.getPersistentData().putBoolean("InDuel", false);
                 NetworkHandler.sendDuelStatus(opp, false);
-                opp.sendSystemMessage(Component.literal(player.getGameProfile().getName() + " hat das Duel beendet."));
             }
         }
         player.getPersistentData().putBoolean("InDuel", false);
         NetworkHandler.sendDuelStatus(player, false);
     }
-}
