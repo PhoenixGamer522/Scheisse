@@ -134,15 +134,18 @@ Adding Libraries to Inheritance
 Reading Input: C:\Users\hahnk\OneDrive\Dokumente\GitHub\Scheisse\build\libs\forge_mod-1.0-SNAPSHOT.jar
 Adding input to inheritance map
 Processing entries
-Conflicting propagated mapping for com/extrahelden/duelmod/effect/LifeSaverEffect/applyEffectTick(Lnet/minecraft/world/entity/LivingEntity;I)V from net/minecraft/world/effect/MobEffect/applyEffectTick(Lnet/minecraft/world/entity/LivingEntity;I)V: applyEffectTick -> m_6742_
-Conflicting propagated mapping for com/extrahelden/duelmod/effect/LifeSaverEffect/isDurationEffectTick(II)Z from net/minecraft/world/effect/MobEffect/isDurationEffectTick(II)Z: isDurationEffectTick -> m_6584_
 Conflicting propagated mapping for net/minecraftforge/client/gui/overlay/ForgeGui/clearCache()V from net/minecraft/client/gui/Gui/clearCache()V: clearCache -> m_93091_
 Conflicting propagated mapping for net/minecraftforge/client/gui/overlay/ForgeGui/render(Lnet/minecraft/client/gui/GuiGraphics;F)V from net/minecraft/client/gui/Gui/render(Lnet/minecraft/client/gui/GuiGraphics;F)V: render -> m_280421_
 Conflicting propagated mapping for net/minecraftforge/client/gui/overlay/ForgeGui/renderPortalOverlay(Lnet/minecraft/client/gui/GuiGraphics;F)V from net/minecraft/client/gui/Gui/renderPortalOverlay(Lnet/minecraft/client/gui/GuiGraphics;F)V: renderPortalOverlay -> m_280379_
 Conflicting propagated mapping for net/minecraftforge/client/gui/overlay/ForgeGui/renderJumpMeter(Lnet/minecraft/world/entity/PlayerRideableJumping;Lnet/minecraft/client/gui/GuiGraphics;I)V from net/minecraft/client/gui/Gui/renderJumpMeter(Lnet/minecraft/world/entity/PlayerRideableJumping;Lnet/minecraft/client/gui/GuiGraphics;I)V: renderJumpMeter -> m_280069_
+Conflicting propagated mapping for com/extrahelden/duelmod/effect/LifeSaverEffect/applyEffectTick(Lnet/minecraft/world/entity/LivingEntity;I)V from net/minecraft/world/effect/MobEffect/applyEffectTick(Lnet/minecraft/world/entity/LivingEntity;I)V: applyEffectTick -> m_6742_
+Conflicting propagated mapping for com/extrahelden/duelmod/effect/LifeSaverEffect/isDurationEffectTick(II)Z from net/minecraft/world/effect/MobEffect/isDurationEffectTick(II)Z: isDurationEffectTick -> m_6584_
 Conflicting propagated mapping for com/extrahelden/duelmod/gui/CustomDeathScreen/render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V from net/minecraft/client/gui/screens/DeathScreen/render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V: render -> m_88315_
 Conflicting propagated mapping for com/extrahelden/duelmod/gui/CustomDeathScreen/init()V from net/minecraft/client/gui/screens/DeathScreen/init()V: init -> m_7856_
 Conflicting propagated mapping for net/minecraft/world/entity/LivingEntity/lambda$addAdditionalSaveData$3(Lnet/minecraft/nbt/CompoundTag;Lnet/minecraft/nbt/Tag;)V from net/minecraft/world/entity/player/Player/lambda$addAdditionalSaveData$3(Lnet/minecraft/nbt/CompoundTag;Lnet/minecraft/nbt/Tag;)V: lambda$addAdditionalSaveData$3 -> m_219754_
+Conflicting propagated mapping for com/extrahelden/duelmod/serializer/GameProfileSerializer$1/copy(Ljava/lang/Object;)Ljava/lang/Object; from net/minecraft/network/syncher/EntityDataSerializer/copy(Ljava/lang/Object;)Ljava/lang/Object;: copy -> m_7020_
+Conflicting propagated mapping for com/extrahelden/duelmod/serializer/GameProfileSerializer$1/read(Lnet/minecraft/network/FriendlyByteBuf;)Ljava/lang/Object; from net/minecraft/network/syncher/EntityDataSerializer/read(Lnet/minecraft/network/FriendlyByteBuf;)Ljava/lang/Object;: read -> m_6709_
+Conflicting propagated mapping for com/extrahelden/duelmod/serializer/GameProfileSerializer$1/write(Lnet/minecraft/network/FriendlyByteBuf;Ljava/lang/Object;)V from net/minecraft/network/syncher/EntityDataSerializer/write(Lnet/minecraft/network/FriendlyByteBuf;Ljava/lang/Object;)V: write -> m_6856_
 Conflicting propagated mapping for com/extrahelden/duelmod/mobs/DummyEntity/getHurtSound(Lnet/minecraft/world/damagesource/DamageSource;)Lnet/minecraft/sounds/SoundEvent; from net/minecraft/world/entity/monster/Zombie/getHurtSound(Lnet/minecraft/world/damagesource/DamageSource;)Lnet/minecraft/sounds/SoundEvent;: getHurtSound -> m_7975_
 Conflicting propagated mapping for com/extrahelden/duelmod/mobs/DummyEntity/die(Lnet/minecraft/world/damagesource/DamageSource;)V from net/minecraft/world/entity/LivingEntity/die(Lnet/minecraft/world/damagesource/DamageSource;)V: die -> m_6667_
 Conflicting propagated mapping for com/extrahelden/duelmod/mobs/DummyEntity/tick()V from net/minecraft/world/entity/monster/Zombie/tick()V: tick -> m_8119_
@@ -150,9 +153,6 @@ Conflicting propagated mapping for com/extrahelden/duelmod/mobs/DummyEntity/defi
 Conflicting propagated mapping for com/extrahelden/duelmod/mobs/DummyEntity/getDeathSound()Lnet/minecraft/sounds/SoundEvent; from net/minecraft/world/entity/monster/Zombie/getDeathSound()Lnet/minecraft/sounds/SoundEvent;: getDeathSound -> m_5592_
 Conflicting propagated mapping for com/extrahelden/duelmod/mobs/DummyEntity/getAmbientSound()Lnet/minecraft/sounds/SoundEvent; from net/minecraft/world/entity/monster/Zombie/getAmbientSound()Lnet/minecraft/sounds/SoundEvent;: getAmbientSound -> m_7515_
 Conflicting propagated mapping for com/extrahelden/duelmod/mobs/DummyEntity/hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z from net/minecraft/world/entity/monster/Zombie/hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z: hurt -> m_6469_
-Conflicting propagated mapping for com/extrahelden/duelmod/serializer/GameProfileSerializer$1/copy(Ljava/lang/Object;)Ljava/lang/Object; from net/minecraft/network/syncher/EntityDataSerializer/copy(Ljava/lang/Object;)Ljava/lang/Object;: copy -> m_7020_
-Conflicting propagated mapping for com/extrahelden/duelmod/serializer/GameProfileSerializer$1/read(Lnet/minecraft/network/FriendlyByteBuf;)Ljava/lang/Object; from net/minecraft/network/syncher/EntityDataSerializer/read(Lnet/minecraft/network/FriendlyByteBuf;)Ljava/lang/Object;: read -> m_6709_
-Conflicting propagated mapping for com/extrahelden/duelmod/serializer/GameProfileSerializer$1/write(Lnet/minecraft/network/FriendlyByteBuf;Ljava/lang/Object;)V from net/minecraft/network/syncher/EntityDataSerializer/write(Lnet/minecraft/network/FriendlyByteBuf;Ljava/lang/Object;)V: write -> m_6856_
 Adding extras
 Sorting
 Writing Output: C:\Users\hahnk\OneDrive\Dokumente\GitHub\Scheisse\build\reobfJar\output.jar
@@ -353,6 +353,8 @@ Writing Output: C:\Users\hahnk\OneDrive\Dokumente\GitHub\Scheisse\build\reobfJar
   com/extrahelden/duelmod/
   com/extrahelden/duelmod/DuelMod$ClientMod.class
   com/extrahelden/duelmod/DuelMod.class
+  com/extrahelden/duelmod/api/
+  com/extrahelden/duelmod/api/PlayerVanishEvent.class
   com/extrahelden/duelmod/client/
   com/extrahelden/duelmod/client/ClientForgeEvents.class
   com/extrahelden/duelmod/client/ClientModEvents.class
@@ -369,7 +371,6 @@ Writing Output: C:\Users\hahnk\OneDrive\Dokumente\GitHub\Scheisse\build\reobfJar
   com/extrahelden/duelmod/command/ShowLivesCommand.class
   com/extrahelden/duelmod/command/SyncLivesS2CPacket$Client.class
   com/extrahelden/duelmod/command/SyncLivesS2CPacket.class
-  com/extrahelden/duelmod/command/VanishCommand.class
   com/extrahelden/duelmod/duel/
   com/extrahelden/duelmod/duel/DuelManager.class
   com/extrahelden/duelmod/effect/

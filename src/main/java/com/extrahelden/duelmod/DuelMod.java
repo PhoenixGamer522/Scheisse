@@ -80,7 +80,7 @@ public class DuelMod {
         DuelCommand.register(event.getDispatcher());
         AcceptCommand.register(event.getDispatcher());
         DenyCommand.register(event.getDispatcher());
-        VanishCommand.register(event.getDispatcher());
+        LiveCommand.register(event.getDispatcher());
     }
 
     @SubscribeEvent

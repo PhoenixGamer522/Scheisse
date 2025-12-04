@@ -1,7 +1,9 @@
 package com.extrahelden.duelmod.duel;
 
+import com.extrahelden.duelmod.helper.Helper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import com.extrahelden.duelmod.network.NetworkHandler;
 
 import java.util.Map;
 import java.util.UUID;
@@ -45,6 +47,10 @@ public final class DuelManager {
         if (challenger == null) return false;
         ACTIVE.put(chalId, target.getUUID());
         ACTIVE.put(target.getUUID(), chalId);
+        challenger.getPersistentData().putBoolean("InDuel", true);
+        target.getPersistentData().putBoolean("InDuel", true);
+        NetworkHandler.sendDuelStatus(challenger, true);
+        NetworkHandler.sendDuelStatus(target, true);
         return true;
     }
 
@@ -64,7 +70,12 @@ public final class DuelManager {
             ACTIVE.remove(oppId);
             ServerPlayer opp = player.getServer().getPlayerList().getPlayer(oppId);
             if (opp != null) {
+                opp.getPersistentData().putBoolean("InDuel", false);
+                NetworkHandler.sendDuelStatus(opp, false);
+                opp.sendSystemMessage(Component.literal(Helper.getPrefix() + "§8 Duel wurde beendet"));
             }
         }
+        player.getPersistentData().putBoolean("InDuel", false);
+        NetworkHandler.sendDuelStatus(player, false);
     }
 }
