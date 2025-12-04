@@ -7,6 +7,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoRemovePacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
+import net.minecraft.server.level.ServerPlayer;
+
 public class VanishCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -38,3 +40,5 @@ public class VanishCommand {
         player.setInvisible(false);
         var server = player.getServer();
         if (server == null) return;
+    }
+}

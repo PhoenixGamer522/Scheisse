@@ -1,6 +1,5 @@
-package com.extrahelden.duelmod.client;
-
 import com.extrahelden.duelmod.DuelMod;
+
 import com.extrahelden.duelmod.gui.CustomDeathScreen;
 import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraftforge.api.distmarker.Dist;
@@ -24,6 +23,16 @@ public final class ClientForgeEvents {
             System.out.println("[DuelMod] Replacing DeathScreen with CustomDeathScreen");
             event.setNewScreen(new CustomDeathScreen(old.getTitle(), true));
             combatDeath = false;
+        }
+    }
+
+    @SubscribeEvent
+    public static void onOverlayPre(RenderGuiOverlayEvent.Pre event) {
+        if (event.getOverlay() == VanillaGuiOverlay.PLAYER_HEALTH.type()) {
+            var mc = net.minecraft.client.Minecraft.getInstance();
+            if (mc.player != null && mc.player.getPersistentData().getBoolean("InDuel")) {
+                event.setCanceled(true);
+            }
         }
     }
 }
