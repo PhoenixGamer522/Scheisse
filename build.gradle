@@ -113,17 +113,15 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    // Put repositories for dependencies here
-    // ForgeGradle automatically adds the Forge maven and Maven Central for you
-
-    // flatDir { dir 'libs' }  // falls du lokale Jars hast
-
+    maven { url = "https://maven.minecraftforge.net" }
     mavenCentral()
 }
 
 
+
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
 }
 
 

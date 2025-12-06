@@ -6,7 +6,6 @@ import com.extrahelden.duelmod.helper.Helper;
 import com.extrahelden.duelmod.util.LinkedHeartOwnerHelper;
 import com.extrahelden.duelmod.combat.CombatManager;
 import com.extrahelden.duelmod.duel.DuelManager;
-import com.extrahelden.duelmod.command.VanishCommand;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -83,9 +82,44 @@ public class MyForgeEventHandler {
         });
 
         if (lives == 0) {
-            player.sendSystemMessage(Component.literal(
-                    Helper.getPrefix() + "§a Dein Linked Heart ist aktiv."
-            ));
+            player.sendSystemMessage(Component.literal(""));
+        }
+
+        if (data.getBoolean("LivePrefix")) {
+            var board = player.getScoreboard();
+            String teamName = "live_" + player.getScoreboardName();
+            var team = board.getPlayerTeam(teamName);
+            if (team == null) {
+                team = board.addPlayerTeam(teamName);
+            }
+            team.setPlayerPrefix(Component.literal("Live ").withStyle(ChatFormatting.RED));
+            board.addPlayerToTeam(player.getScoreboardName(), team);
+        }
+
+        if (data.getBoolean("LivePrefix")) {
+            var board = player.getScoreboard();
+            String teamName = "live_" + player.getScoreboardName();
+            var team = board.getPlayerTeam(teamName);
+            if (team == null) {
+                team = board.addPlayerTeam(teamName);
+            }
+            team.setPlayerPrefix(Component.literal("Live ").withStyle(ChatFormatting.RED));
+            board.addPlayerToTeam(player.getScoreboardName(), team);
+        }
+
+        if (data.getBoolean("Vanished")) {
+            com.extrahelden.duelmod.command.VanishCommand.applyVanish(player);
+        }
+
+        var server = player.getServer();
+        if (server != null) {
+            for (ServerPlayer other : server.getPlayerList().getPlayers()) {
+                if (other == player) continue;
+                if (other.getPersistentData().getBoolean("Vanished")) {
+                    player.connection.send(new ClientboundPlayerInfoRemovePacket(java.util.List.of(other.getUUID())));
+                    VanishCommand.sendEmptyEquipment(other, player);
+                }
+            }
         }
 
         if (data.getBoolean("LivePrefix")) {
@@ -126,11 +160,6 @@ public class MyForgeEventHandler {
             ServerPlayer opponent = DuelManager.getOpponent(victim);
             DuelManager.end(victim);
             if (opponent != null) {
-                opponent.sendSystemMessage(Component.literal("Duel wurde beendet."));
-                opponent.displayClientMessage(
-                        Component.literal("Du hast das Duel gewonnen").withStyle(ChatFormatting.AQUA),
-                        true
-                );
             }
             return;
         }
@@ -202,7 +231,7 @@ public class MyForgeEventHandler {
 
         // lives == 0 → nur bannen/kicken wenn Angreifer Spieler ist
         if (attacker != null) {
-            broadcastKillMessage(victim, attackerName, "§c(Linked Heart verbraucht → ausgeschieden)");
+            broadcastKillMessage(victim, attackerName, "");
 
             var srv = victim.getServer();
             if (srv != null) {
@@ -213,20 +242,18 @@ public class MyForgeEventHandler {
                         null,               // ab sofort
                         "EXTRAHELDEN",
                         null,               // permanent
-                        "Eliminiert (Linked Heart zerstört im PvP)"
+                        Helper.getPrefix() + "\n\nDu hast alle Herzen verloren und bist damit aus dem Projekt §c§l ausgeschieden!"
                 );
                 banList.add(entry);
             }
 
             data.putBoolean("LinkedHeartActive", false); // optional
-            victim.connection.disconnect(Component.literal(
-                    "[EXTRAHELDEN]\n\nDein Linked Heart wurde durch einen Spieler zerstört.\nDu bist aus dem Projekt ausgeschieden!"
+            victim.connection.disconnect(Component.literal(Helper.getPrefix() +
+                    "\n\nDu hast alle Herzen verloren und bist damit aus dem Projekt §c§l ausgeschieden!"
             ));
         } else {
             // Umwelt/kein Spieler → kein Ban, Linked Heart bleibt aktiv
-            victim.sendSystemMessage(Component.literal(
-                    Helper.getPrefix() + "§e Du bist mit aktivem Linked Heart gestorben, aber nicht durch einen Spieler. Du bleibst im Projekt."
-            ));
+            victim.sendSystemMessage(Component.literal(""));
             data.putBoolean("LinkedHeartActive", true);
             com.extrahelden.duelmod.network.NetworkHandler.syncLives(victim, 0, ownerName, ownerUuid);
         }
@@ -252,11 +279,11 @@ public class MyForgeEventHandler {
 
     private static void broadcastKillMessage(ServerPlayer victim, String attackerName, String suffix) {
         MutableComponent msg = Component.literal(Helper.getPrefix() + " ")
-                .append(victim.getDisplayName().copy().withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD))
-                .append(Component.literal("§r§f wurde von "))
+                .append(victim.getDisplayName().copy().withStyle(ChatFormatting.RED))
+                .append(Component.literal("§r§8 wurde im Kampf von "))
                 .append(Component.literal(attackerName == null ? "Unbekannt" : attackerName)
-                        .copy().withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD))
-                .append(Component.literal("§r§f besiegt! " + suffix));
+                        .copy().withStyle(ChatFormatting.GREEN))
+                .append(Component.literal("§r§8 getötet"));
         if (victim.getServer() != null) {
             victim.getServer().getPlayerList().broadcastSystemMessage(msg, false);
         }
@@ -294,8 +321,8 @@ public class MyForgeEventHandler {
 
     private static void broadcastCombatLogout(ServerPlayer player, int livesLeft) {
         MutableComponent msg = Component.literal(Helper.getPrefix() + " ")
-                .append(player.getDisplayName().copy().withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD))
-                .append(Component.literal("§r§f hat sich während des Kampfes ausgeloggt! §c(-1 Leben)"));
+                .append(player.getDisplayName().copy().withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.BOLD))
+                .append(Component.literal("§r§8 hat sich während des Kampfes ausgeloggt! §c(-1 Leben)"));
         if (player.getServer() != null) {
             player.getServer().getPlayerList().broadcastSystemMessage(msg, false);
         }
@@ -389,9 +416,6 @@ public class MyForgeEventHandler {
             var server = event.getServer();
             if (server != null) {
                 for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-                    if (player.getPersistentData().getBoolean("Vanished")) {
-                        VanishCommand.hideEquipment(player);
-                    }
                     int ticks = CombatManager.getRemainingTicks(player);
                     if (ticks > 0) {
                         int seconds = (ticks + 19) / 20;
