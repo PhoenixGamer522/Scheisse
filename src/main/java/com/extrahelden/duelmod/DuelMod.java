@@ -1,6 +1,8 @@
 package com.extrahelden.duelmod;
 
+import com.extrahelden.duelmod.command.*;
 import com.extrahelden.duelmod.effect.ModEffects;
+import com.extrahelden.duelmod.events.InventoryProviderEvents;
 import com.extrahelden.duelmod.handler.DeathHandler;
 import com.extrahelden.duelmod.handler.ModBlocks;
 import com.extrahelden.duelmod.handler.ModEntities;
@@ -9,7 +11,12 @@ import com.extrahelden.duelmod.network.NetworkHandler;
 import com.extrahelden.duelmod.serializer.GameProfileSerializer;
 import com.extrahelden.duelmod.util.DuelConfig;
 import com.mojang.logging.LogUtils;
+import net.minecraft.Util;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtIo;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -18,6 +25,7 @@ import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.IExtensionPoint;
+import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -25,6 +33,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 @Mod(DuelMod.MOD_ID)
 public class DuelMod {
@@ -47,6 +58,7 @@ public class DuelMod {
         modBus.addListener(this::commonSetup);
         modBus.addListener(ClientMod::clientSetup);
         modBus.addListener(ModEntities::registerEntityAttributes);
+        modBus.addListener(InventoryProviderEvents::registerProviders);
 
         // ----- Registries -----
         ModEffects.register(modBus);
@@ -77,14 +89,18 @@ public class DuelMod {
 
     private void onRegisterCommands(RegisterCommandsEvent event) {
         ShowLivesCommand.register(event.getDispatcher());
-        LiveCommand.register(event.getDispatcher());
+        VanishCommand.register(event.getDispatcher());
+        DuelCommand.register(event.getDispatcher());
+        AcceptCommand.register(event.getDispatcher());
+        DenyCommand.register(event.getDispatcher());
+        new InvViewCommands(event.getDispatcher());
+
     }
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         DeathHandler.load(event.getServer());
     }
-
     @SubscribeEvent
     public void onServerStopping(ServerStoppingEvent event) {
         DeathHandler.save(event.getServer());
@@ -99,6 +115,21 @@ public class DuelMod {
                 // Dein Herz-Overlay oben drüber legen
                 LOGGER.info("Client setup complete: HeartBarOverlay registered.");
             });
+        }
+    }
+    public static void savePlayerData(ServerPlayer player) {
+        File playerDataDir = player.server.getWorldPath(LevelResource.PLAYER_DATA_DIR).toFile();
+
+        try {
+            CompoundTag compoundTag = player.saveWithoutId(new CompoundTag());
+            File file = File.createTempFile(player.getStringUUID() + "-", ".dat", playerDataDir);
+            final FileOutputStream fos = new FileOutputStream(file);
+            NbtIo.writeCompressed(compoundTag, fos);
+            File file2 = new File(playerDataDir, player.getStringUUID() + ".dat");
+            File file3 = new File(playerDataDir, player.getStringUUID() + ".dat_old");
+            Util.safeReplaceFile(file2.toPath(), file.toPath(), file3.toPath());
+        } catch (Exception var6) {
+            LOGGER.warn("Failed to save player data for {}", player.getName().getString());
         }
     }
 }

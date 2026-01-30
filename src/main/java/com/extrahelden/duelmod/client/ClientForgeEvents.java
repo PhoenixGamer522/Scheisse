@@ -26,4 +26,14 @@ public final class ClientForgeEvents {
             combatDeath = false;
         }
     }
+
+    @SubscribeEvent
+    public static void onOverlayPre(RenderGuiOverlayEvent.Pre event) {
+        if (event.getOverlay() == VanillaGuiOverlay.PLAYER_HEALTH.type()) {
+            var mc = net.minecraft.client.Minecraft.getInstance();
+            if (mc.player != null && mc.player.getPersistentData().getBoolean("InDuel")) {
+                event.setCanceled(true);
+            }
+        }
+    }
 }

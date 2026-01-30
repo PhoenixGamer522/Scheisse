@@ -76,3 +76,4 @@ public final class DuelManager {
         player.getPersistentData().putBoolean("InDuel", false);
         NetworkHandler.sendDuelStatus(player, false);
     }
+}

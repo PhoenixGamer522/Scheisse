@@ -1,6 +1,7 @@
 package com.extrahelden.duelmod.handler;
 
 import com.extrahelden.duelmod.DuelMod;
+import com.extrahelden.duelmod.command.VanishCommand;
 import com.extrahelden.duelmod.effect.ModEffects;
 import com.extrahelden.duelmod.helper.Helper;
 import com.extrahelden.duelmod.util.LinkedHeartOwnerHelper;
@@ -27,7 +28,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Mod.EventBusSubscriber(modid = DuelMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class MyForgeEventHandler {
@@ -216,14 +219,14 @@ public class MyForgeEventHandler {
                         null,               // ab sofort
                         "EXTRAHELDEN",
                         null,               // permanent
-                        Helper.getPrefix() + "\n\nDu hast alle Herzen verloren und bist damit aus dem Projekt §c§l ausgeschieden!"
+                        Helper.getPrefix() + "\n\nDu hast alle Herzen verloren und bist damit aus dem Projekt §c§lausgeschieden!"
                 );
                 banList.add(entry);
             }
 
             data.putBoolean("LinkedHeartActive", false); // optional
             victim.connection.disconnect(Component.literal(Helper.getPrefix() +
-                    "\n\nDu hast alle Herzen verloren und bist damit aus dem Projekt §c§l ausgeschieden!"
+                    "\n\nDu hast alle Herzen verloren und bist damit aus dem Projekt §c§lausgeschieden!"
             ));
         } else {
             // Umwelt/kein Spieler → kein Ban, Linked Heart bleibt aktiv
@@ -254,10 +257,10 @@ public class MyForgeEventHandler {
     private static void broadcastKillMessage(ServerPlayer victim, String attackerName, String suffix) {
         MutableComponent msg = Component.literal(Helper.getPrefix() + " ")
                 .append(victim.getDisplayName().copy().withStyle(ChatFormatting.RED))
-                .append(Component.literal("§r§8 wurde im Kampf von "))
+                .append(Component.literal("§r§7 wurde im Kampf von "))
                 .append(Component.literal(attackerName == null ? "Unbekannt" : attackerName)
                         .copy().withStyle(ChatFormatting.GREEN))
-                .append(Component.literal("§r§8 getötet"));
+                .append(Component.literal("§r§7" + " getötet"));
         if (victim.getServer() != null) {
             victim.getServer().getPlayerList().broadcastSystemMessage(msg, false);
         }
@@ -296,7 +299,7 @@ public class MyForgeEventHandler {
     private static void broadcastCombatLogout(ServerPlayer player, int livesLeft) {
         MutableComponent msg = Component.literal(Helper.getPrefix() + " ")
                 .append(player.getDisplayName().copy().withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.BOLD))
-                .append(Component.literal("§r§8 hat sich während des Kampfes ausgeloggt! §c(-1 Leben)"));
+                .append(Component.literal("§r§7 hat sich während des Kampfes ausgeloggt! §c(-1 Leben)"));
         if (player.getServer() != null) {
             player.getServer().getPlayerList().broadcastSystemMessage(msg, false);
         }
@@ -390,6 +393,9 @@ public class MyForgeEventHandler {
             var server = event.getServer();
             if (server != null) {
                 for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+                    if (player.getPersistentData().getBoolean("Vanished")) {
+                        VanishCommand.hideEquipment(player);
+                    }
                     int ticks = CombatManager.getRemainingTicks(player);
                     if (ticks > 0) {
                         int seconds = (ticks + 19) / 20;
