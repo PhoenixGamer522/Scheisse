@@ -2,6 +2,7 @@ package com.extrahelden.duelmod;
 
 import com.extrahelden.duelmod.effect.ModEffects;
 import com.extrahelden.duelmod.handler.DeathHandler;
+import com.extrahelden.duelmod.handler.ModBlocks;
 import com.extrahelden.duelmod.handler.ModEntities;
 import com.extrahelden.duelmod.handler.MyForgeEventHandler;
 import com.extrahelden.duelmod.network.NetworkHandler;
@@ -50,6 +51,7 @@ public class DuelMod {
         // ----- Registries -----
         ModEffects.register(modBus);
         ModEntities.register(modBus);
+        ModBlocks.register(modBus);
 
         // ----- Forge EventBus -----
         MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommands);
