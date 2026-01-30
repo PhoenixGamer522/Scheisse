@@ -53,27 +53,25 @@ public class CustomDeathScreen extends DeathScreen {
             lastFrameTimeNs = now;
         }
 
-        if (currentFrame >= FRAME_ANIM_COUNT) {
-            initialAnimationDone = true;
-            currentFrame = FRAME_ANIM_COUNT - 1;
+        if (this.currentFrame >= 149) {
+            this.initialAnimationDone = true;
+            this.currentFrame = 148;
         }
 
         ResourceLocation tex = FRAMES_ANIM[currentFrame];
         RenderSystem.setShaderTexture(0, tex);
 
         if (currentFrame >= 129) {
-            int fadeFrame = currentFrame - 129;
-            float alpha = 1.0F - (float) fadeFrame / 20.0F;
-
+            int fadeFrame = this.currentFrame - 129;
+            float alpha = 1.0F - fadeFrame / 20.0F;
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
-            RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
         } else {
-            RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
 
         g.blit(tex, 0, 0, 0, 0, this.width, this.height, this.width, this.height);
-
         RenderSystem.disableBlend();
     }
 
@@ -81,8 +79,7 @@ public class CustomDeathScreen extends DeathScreen {
         for (int i = 0; i < FRAME_ANIM_COUNT; i++) {
             FRAMES_ANIM[i] = new ResourceLocation(
                     "forge_mod", // <-- KEIN Leerzeichen, dein finaler modid!
-                    String.format("textures/gui/frames_anim/minecrafthelden_%d.jpg", i)
-            );
+                    String.format("textures/gui/frames_anim/minecrafthelden_%d.jpg", new Object[] { Integer.valueOf(i) }));
         }
     }
 }

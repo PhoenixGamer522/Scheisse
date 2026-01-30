@@ -1,90 +1,83 @@
 package com.extrahelden.duelmod.handler;
 
-import com.extrahelden.duelmod.DuelMod;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fml.common.Mod;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.MinecraftServer;
 
-/**
- * Verwaltet die letzten Todespositionen pro Spieler und speichert sie in einer JSON-Datei.
- */
-@Mod.EventBusSubscriber(modid = DuelMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DeathHandler {
+    private static final File DEATH_POSITIONS_FILE = new File("death_positions.json");
 
-    private static File deathFile;
+    private static final Type DEATH_POSITIONS_TYPE = (new TypeToken<Map<UUID, List<BlockPos>>>() {
+
+    }).getType();
+
     private static final Gson GSON = new Gson();
-    private static final Type TYPE = new TypeToken<Map<UUID, List<BlockPos>>>() {}.getType();
+
     private static Map<UUID, List<BlockPos>> deathPositions = new HashMap<>();
 
-    /**
-     * Initialisiert und lädt die gespeicherten Todespositionen.
-     * Die Datei wird im Server-Root unter "death_positions.json" abgelegt.
-     */
     public static void load(MinecraftServer server) {
-        deathFile = new File(server.getServerDirectory(), "death_positions.json");
-        if (!deathFile.exists()) {
-            deathPositions = new HashMap<>();
-            return;
-        }
-        try (FileReader reader = new FileReader(deathFile)) {
-            Map<UUID, List<BlockPos>> loaded = GSON.fromJson(reader, TYPE);
-            deathPositions = (loaded != null) ? loaded : new HashMap<>();
-        } catch (IOException e) {
-            e.printStackTrace();
-            deathPositions = new HashMap<>();
-        }
+        File file = DEATH_POSITIONS_FILE;
+        if (file.exists())
+            try {
+                FileReader reader = new FileReader(file);
+                try {
+                    deathPositions = (Map<UUID, List<BlockPos>>)GSON.fromJson(reader, DEATH_POSITIONS_TYPE);
+                    reader.close();
+                } catch (Throwable throwable) {
+                    try {
+                        reader.close();
+                    } catch (Throwable throwable1) {
+                        throwable.addSuppressed(throwable1);
+                    }
+                    throw throwable;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
 
-    /**
-     * Speichert die aktuellen Todespositionen in die JSON-Datei.
-     */
     public static void save(MinecraftServer server) {
-        if (deathFile == null) {
-            deathFile = new File(server.getServerDirectory(), "death_positions.json");
-        }
-        try (FileWriter writer = new FileWriter(deathFile)) {
-            GSON.toJson(deathPositions, TYPE, writer);
+        try {
+            FileWriter writer = new FileWriter(DEATH_POSITIONS_FILE);
+            try {
+                GSON.toJson(deathPositions, writer);
+                writer.close();
+            } catch (Throwable throwable) {
+                try {
+                    writer.close();
+                } catch (Throwable throwable1) {
+                    throwable.addSuppressed(throwable1);
+                }
+                throw throwable;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * Fügt eine neue Todesposition ganz vorne in die Liste ein.
-     * Begrenzt die Liste auf maximal 3 Einträge.
-     */
     public static void addDeathPosition(UUID playerUUID, BlockPos pos) {
-        List<BlockPos> list = deathPositions.computeIfAbsent(playerUUID, k -> new ArrayList<>());
-        list.add(0, pos);
-        if (list.size() > 3) {
-            list.remove(list.size() - 1);
-        }
+        List<BlockPos> positions = deathPositions.computeIfAbsent(playerUUID, k -> new ArrayList());
+        positions.add(0, pos);
+        if (positions.size() > 3)
+            positions.remove(3);
     }
 
-    /**
-     * Gibt die zuletzt gespeicherten Todespositionen (max. 3) für den Spieler zurück.
-     */
     public static List<BlockPos> getDeathPositions(UUID playerUUID) {
-        return Collections.unmodifiableList(
-                deathPositions.getOrDefault(playerUUID, Collections.emptyList())
-        );
+        return deathPositions.getOrDefault(playerUUID, new ArrayList<>());
     }
 
-    /**
-     * Entfernt eine gegebene Position aus allen Spieler-Listen.
-     */
     public static void removeDeathPosition(BlockPos pos) {
-        for (List<BlockPos> list : deathPositions.values()) {
-            list.remove(pos);
-        }
+        deathPositions.values().forEach(list -> list.remove(pos));
     }
 }

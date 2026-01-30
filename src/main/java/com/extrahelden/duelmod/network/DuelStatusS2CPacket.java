@@ -29,3 +29,4 @@ public record DuelStatusS2CPacket(boolean inDuel) {
         });
         ctx.setPacketHandled(true);
     }
+}

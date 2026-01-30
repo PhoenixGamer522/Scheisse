@@ -1,5 +1,6 @@
-import com.extrahelden.duelmod.DuelMod;
+package com.extrahelden.duelmod.client;
 
+import com.extrahelden.duelmod.DuelMod;
 import com.extrahelden.duelmod.gui.CustomDeathScreen;
 import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraftforge.api.distmarker.Dist;
